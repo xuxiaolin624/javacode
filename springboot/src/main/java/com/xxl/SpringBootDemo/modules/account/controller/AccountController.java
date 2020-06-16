@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AccountController {	
 	
 	//登录页
-	@RequestMapping("/login")
+	@RequestMapping("/login") 
 	public String loginPage() {
 		return "indexSimple";
 		
