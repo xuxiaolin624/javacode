@@ -1,0 +1,34 @@
+ <!DOCTYPE html>
+<html
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>SpringDemo</title>
+<meta name="description" content="THORNBIRD.COM" />
+
+	<!-- 引入css -->
+	<!-- Bootstrap -->
+	<link th:href="${'/vendors/bootstrap/dist/css/bootstrap.min.css'}" rel="stylesheet" />
+	<!-- Font Awesome -->
+	<link th:href="${'/vendors/font-awesome/css/font-awesome.min.css'}" rel="stylesheet" />
+	<!-- NProgress -->
+    <link href="${'/vendors/nprogress/nprogress.css'}" rel="stylesheet">
+    <!-- Animate.css -->
+    <link href="${'/vendors/animate.css/animate.min.css'}" rel="stylesheet">
+	<!-- Custom Theme Style -->
+	<link th:href="${'/build/css/custom.min.css'}" rel="stylesheet" />
+
+	<!-- 引入js -->
+	<!-- <script th:src="@{http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js}"></script> -->
+	
+</head>
+
+<body class="login">
+	<div th:if="${template}">
+		<div th:replace="${template}"></div>
+	</div>
+     
+</body>
+</html>
