@@ -18,6 +18,12 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @Entity
 @Table(name = "user")
 public class User {
+	@Override
+	public String toString() {
+		return "User [userId=" + userId + ", userName=" + userName + ", password=" + password + ", createDate="
+				+ createDate + "]";
+	}
+
 	@Id
 	// 自增策略
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
