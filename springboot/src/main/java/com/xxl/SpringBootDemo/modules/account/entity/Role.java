@@ -9,31 +9,55 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-/**
- * 角色类
- * 
- * @author: HymanHu
- * @date: 2019年11月28日
- */
 @Entity
 @Table(name = "role")
 public class Role {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int roleId;
+	private Integer roleId;
 	private String roleName;
 
 	@Transient
 	private List<User> users;
 	@Transient
 	private List<Resource> resources;
+	
+	
+	
+	public Role() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
-	public int getRoleId() {
+	
+	
+	public Role(Integer roleId) {
+		super();
+		this.roleId = roleId;
+	}
+
+
+	public Role(String roleName) {
+		super();
+		this.roleName = roleName;
+	}
+
+
+
+	public Role(Integer roleId, String roleName) {
+		super();
+		this.roleId = roleId;
+		this.roleName = roleName;
+	}
+
+
+
+	public Integer getRoleId() {
 		return roleId;
 	}
 
-	public void setRoleId(int roleId) {
+	public void setRoleId(Integer roleId) {
 		this.roleId = roleId;
 	}
 

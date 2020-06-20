@@ -6,41 +6,36 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-/**
- * 角色资源类
- * @author: HymanHu
- * @date: 2019年11月28日
- */
 @Entity
 @Table(name = "role_resource")
 public class RoleResource {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int roleResourceId;
-	private int roleId;
-	private int resourceId;
+	private Integer roleResourceId;
+	private Integer roleId;
+	private Integer resourceId;
 
-	public int getRoleResourceId() {
+	public Integer getRoleResourceId() {
 		return roleResourceId;
 	}
 
-	public void setRoleResourceId(int roleResourceId) {
+	public void setRoleResourceId(Integer roleResourceId) {
 		this.roleResourceId = roleResourceId;
 	}
 
-	public int getRoleId() {
+	public Integer getRoleId() {
 		return roleId;
 	}
 
-	public void setRoleId(int roleId) {
+	public void setRoleId(Integer roleId) {
 		this.roleId = roleId;
 	}
 
-	public int getResourceId() {
+	public Integer getResourceId() {
 		return resourceId;
 	}
 
-	public void setResourceId(int resourceId) {
+	public void setResourceId(Integer resourceId) {
 		this.resourceId = resourceId;
 	}
 }

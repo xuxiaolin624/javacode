@@ -9,16 +9,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-/**
- * 资源类
- */
 @Entity
 @Table(name = "resource")
 public class Resource {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int resourceId;
+	private Integer resourceId;
 	private String resourceUri;
 	private String resourceName;
 	private String permission;
@@ -26,11 +23,31 @@ public class Resource {
 	@Transient
 	private List<Role> roles;
 
+	
+	public Resource() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	public Resource(Integer resourceId, String resourceUri, String resourceName, String permission) {
+		super();
+		this.resourceId = resourceId;
+		this.resourceUri = resourceUri;
+		this.resourceName = resourceName;
+		this.permission = permission;
+	}
+	
+	public Resource(Integer resourceId, String resourceName) {
+		super();
+		this.resourceId = resourceId;
+		this.resourceName = resourceName;
+	}
+
 	public int getResourceId() {
 		return resourceId;
 	}
 
-	public void setResourceId(int resourceId) {
+	public void setResourceId(Integer resourceId) {
 		this.resourceId = resourceId;
 	}
 

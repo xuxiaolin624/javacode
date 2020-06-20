@@ -5,15 +5,25 @@ import com.xxl.SpringBootDemo.modules.account.entity.User;
 import com.xxl.SpringBootDemo.modules.common.vo.Result;
 import com.xxl.SpringBootDemo.modules.common.vo.SearchVo;
 
-public interface UserService {
+public interface UserService { 
 	// 插入用户-注册
-	Result<User> insertUser(User user);
+	public Result<User> insertUser(User user);
 
 	// 根据姓名查询用户
-	User getUserByUserName(String userName);
- 
+	public User getUserByUserName(String userName);
+
 	// 登录
-	Result<User> login(User user);
+	public Result<User> login(User user);
+
+	public PageInfo<User> getUsersBySearchVo(SearchVo searchVo);
+
+	public User getUserByUserId(int userId);
+
+	public Result<User> updateUser(User user);
+
+	public Result<Object> deleteUser(int userId);
 	
-	PageInfo<User> getUsersBySarchVo(SearchVo searchVo);
+	
+	
+	
 }
