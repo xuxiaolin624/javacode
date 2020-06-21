@@ -21,7 +21,7 @@ public interface UserRoleDao {
 
 	@Insert("insert into user_role (user_id,role_id) value (#{userId},#{roleId})")
 	void insertUserRole(@Param("userId") Integer userId, @Param("roleId") Integer roleId);
-
+ 
 	@Select("select * from user where user_id=#{userId}")
 	@Results(id = "userResult", value = { @Result(column = "user_id", property = "userId"),
 			@Result(column = "user_id", property = "roles", javaType = List.class, many = @Many(select = "com.xxl.SpringBootDemo.modules.account.dao."

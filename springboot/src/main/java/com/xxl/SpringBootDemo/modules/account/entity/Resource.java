@@ -43,7 +43,7 @@ public class Resource {
 		this.resourceName = resourceName;
 	}
 
-	public int getResourceId() {
+	public Integer getResourceId() {
 		return resourceId;
 	}
 
