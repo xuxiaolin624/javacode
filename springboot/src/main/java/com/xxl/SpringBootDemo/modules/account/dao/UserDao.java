@@ -39,7 +39,8 @@ public interface UserDao {
 					+ "RoleDao.getRolesByUserId")) })
 	public User getUserByUserId(int userId);
 
-	@Update("update user set user_name = #{userName} where user_id = #{userId}")
+//	@Update("update user set user_name = #{userName} where user_id = #{userId}")
+	@Update("update user set user_name = #{userName}, user_img = #{userImg} where user_id = #{userId}")
 	public void updateUser(User user);
 
 	@Delete("delete from user where user_id=#{userId}")

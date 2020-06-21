@@ -1,11 +1,13 @@
 package com.xxl.SpringBootDemo.modules.account.service;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.github.pagehelper.PageInfo;
 import com.xxl.SpringBootDemo.modules.account.entity.User;
 import com.xxl.SpringBootDemo.modules.common.vo.Result;
 import com.xxl.SpringBootDemo.modules.common.vo.SearchVo;
 
-public interface UserService { 
+public interface UserService {
 	// 插入用户-注册
 	public Result<User> insertUser(User user);
 
@@ -22,8 +24,11 @@ public interface UserService {
 	public Result<User> updateUser(User user);
 
 	public Result<Object> deleteUser(int userId);
-	
-	
-	
-	
+
+	public Result<User> editUser(User user);
+
+	Result<String> uploadUserImage(MultipartFile userImage);
+
+	Result<User> updateUserProfile(User user);
+
 }
