@@ -219,6 +219,7 @@
 							if (data.status == 200) {
 								initTable(DEFAULT_PAGE_SIZE);
 							} else {
+								//window.location.href=data.object;//发生异常则界面跳转
 								layer.msg(data.message, {icon: 0});
 							}
 						},

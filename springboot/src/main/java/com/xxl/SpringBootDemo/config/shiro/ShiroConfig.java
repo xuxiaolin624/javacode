@@ -42,7 +42,7 @@ public class ShiroConfig {
 	 * anon：匿名访问，无需登录
 	 * authc：登录后才能访问
 	 * user：登录过能访问
-	 * logout：登出
+	 * logout：注销
 	 * roles：角色过滤器
 	 * ------------------
 	 * URL匹配风格
@@ -64,7 +64,7 @@ public class ShiroConfig {
 		map.put("/static/**", "anon");
 		map.put("/build/**", "anon");
 		map.put("/images/**", "anon");
-//		map.put("/shopping/**", "anon");
+		//map.put("/shopping/**", "anon");
 		map.put("/vendors/**", "anon");
 		map.put("/account/login", "anon");
 		map.put("/account/register", "anon");
@@ -72,11 +72,12 @@ public class ShiroConfig {
 		map.put("/api/user", "anon");
 		map.put("/test/**", "anon");//游客就可以访问
 		// 如果使用“记住我功能”，则采用user规则，如果必须要用户登录，则采用authc规则
-		map.put("/**", "user");//用户可以访问
+		map.put("/**", "user");//登录过可以访问
 		//map.put("/**", "authc");最严——必须要登录才能访问
 		shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
 		return shiroFilterFactoryBean;
 	}
+	
 	/**
 	 * --注册shiro方言，让thymeleaf支持shiro标签
 	 */
@@ -115,9 +116,9 @@ public class ShiroConfig {
 	    SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
 	    //如果httyOnly设置为true，则客户端不会暴露给客户端脚本代码，
 	    //使用HttpOnly cookie有助于减少某些类型的跨站点脚本攻击；
-	    simpleCookie.setHttpOnly(true);
+	    simpleCookie.setHttpOnly(true);//只有http可用
 	    //记住我cookie生效时间,单位是秒
-	    simpleCookie.setMaxAge(1 * 24 * 60 * 60);
+	    simpleCookie.setMaxAge(24 * 3600 );
 	    return simpleCookie;
 	}
 	
@@ -128,6 +129,7 @@ public class ShiroConfig {
 	public CookieRememberMeManager rememberMeManager() {
 	    CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
 	    cookieRememberMeManager.setCookie(rememberMeCookie());
+	    //解密
 	    byte[] cipherKey = Base64.decode("wGiHplamyXlVB11UXWol8g==");
 	    cookieRememberMeManager.setCipherService(new AesCipherService());
 	    cookieRememberMeManager.setCipherKey(cipherKey);
@@ -158,6 +160,6 @@ public class ShiroConfig {
 		sessionManager.setSessionIdUrlRewritingEnabled(false);
 		sessionManager.setSessionIdCookie(sessionCookie());
 		return sessionManager;
-	}
+	} 
 	
 }

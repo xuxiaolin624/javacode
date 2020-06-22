@@ -11,6 +11,7 @@ import javax.transaction.Transactional;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,7 +75,6 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Result<User> login(User user) {
-
 //		User userTemp = userDao.getUserByUserName(user.getUserName());
 //		if (userTemp == null || !userTemp.getPassword().equals(MD5Util.getMD5(user.getPassword()))) {
 //			return new Result<User>(ResultStatus.SUCCESS.status, "用户名或密码错误。");
@@ -84,16 +84,19 @@ public class UserServiceImpl implements UserService {
 		try {
 			Subject subject = SecurityUtils.getSubject();
 			//包装令牌
-			UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(user.getUserName(),
-					MD5Util.getMD5(user.getPassword()));
+			UsernamePasswordToken usernamePasswordToken = 
+					new UsernamePasswordToken(user.getUserName(), MD5Util.getMD5(user.getPassword()));
 			usernamePasswordToken.setRememberMe(user.getRememberMe());
 			//转到shiro身份验证
 			subject.login(usernamePasswordToken);
 			subject.checkRoles();
 
-//			Session session = subject.getSession();
-//			User userTemp = (User) subject.getPrincipal();
-//			session.setAttribute("userId", userTemp.getUserId());
+			Session session = subject.getSession();
+			User userTemp = (User) subject.getPrincipal();
+			//user对象封装到session
+			session.setAttribute("userId", userTemp.getUserId());
+			session.setAttribute("userName", userTemp.getUserName());
+			session.setAttribute("userImg", userTemp.getUserImg());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new Result<User>(ResultStatus.FAILED.status, "用户名或密码错误。");
