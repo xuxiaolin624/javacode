@@ -1,5 +1,7 @@
 package com.xxl.SpringBootDemo.modules.account.controller;
 
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,13 +56,16 @@ public class UserController {
 
 	@PutMapping(value = "/user", consumes = "application/json")
 	public Result<User> updateUser(@RequestBody User user) {
-//		 return userService.updateUser(user);
+		// return userService.updateUser(user);
 		return userService.editUser(user);
 	}
 
 	@DeleteMapping("/user/{userId}")
-	@PutMapping(value = "/user", consumes = "application/json")
-	public Result<Object> DeleteUser(@PathVariable int userId) {
+	// OR——若permission为/api/user或*则可以执行删除，and则是且
+	//拥有role对应的resource为"/api/user"或"*"的用户可执行删除
+	@RequiresPermissions(value = { "/api/user", "*" }, logical = Logical.OR)
+	// @PutMapping(value = "/user", consumes = "application/json")
+	public Result<Object> deleteUser(@PathVariable int userId) {
 		return userService.deleteUser(userId);
 	}
 
@@ -73,7 +78,6 @@ public class UserController {
 		return userService.uploadUserImage(userImage);
 	}
 
-	
 	/**
 	 * 
 	 * 127.0.0.1/api/profile ---- put
@@ -82,26 +86,5 @@ public class UserController {
 	public Result<User> updateUserProfile(@RequestBody User user) {
 		return userService.updateUserProfile(user);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }

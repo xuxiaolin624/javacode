@@ -16,6 +16,8 @@ public interface UserService {
 
 	// 登录
 	public Result<User> login(User user);
+	//注销
+	public void logOut();
 
 	public PageInfo<User> getUsersBySearchVo(SearchVo searchVo);
 

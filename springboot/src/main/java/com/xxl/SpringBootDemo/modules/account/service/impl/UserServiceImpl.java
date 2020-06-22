@@ -9,6 +9,9 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +56,7 @@ public class UserServiceImpl implements UserService {
 		User userTemp = getUserByUserName(user.getUserName());
 		// 判断是否存在
 		if (userTemp != null) {
-			return new Result<User>(ResultStatus.FAILD.status, "账户已存在，请重新输入。");
+			return new Result<User>(ResultStatus.FAILED.status, "账户已存在，请重新输入。");
 		} else {
 			user.setCreateDate(new Date());
 			user.setPassword(MD5Util.getMD5(user.getPassword()));
@@ -71,11 +74,39 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Result<User> login(User user) {
-		User userTemp = userDao.getUserByUserName(user.getUserName());
-		if (userTemp == null || !userTemp.getPassword().equals(MD5Util.getMD5(user.getPassword()))) {
-			return new Result<User>(ResultStatus.SUCCESS.status, "用户名或密码错误。");
+
+//		User userTemp = userDao.getUserByUserName(user.getUserName());
+//		if (userTemp == null || !userTemp.getPassword().equals(MD5Util.getMD5(user.getPassword()))) {
+//			return new Result<User>(ResultStatus.SUCCESS.status, "用户名或密码错误。");
+//		}
+//		return new Result<User>(ResultStatus.SUCCESS.status, "登录成功。");
+
+		try {
+			Subject subject = SecurityUtils.getSubject();
+			//包装令牌
+			UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(user.getUserName(),
+					MD5Util.getMD5(user.getPassword()));
+			usernamePasswordToken.setRememberMe(user.getRememberMe());
+			//转到shiro身份验证
+			subject.login(usernamePasswordToken);
+			subject.checkRoles();
+
+//			Session session = subject.getSession();
+//			User userTemp = (User) subject.getPrincipal();
+//			session.setAttribute("userId", userTemp.getUserId());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Result<User>(ResultStatus.FAILED.status, "用户名或密码错误。");
 		}
-		return new Result<User>(ResultStatus.SUCCESS.status, "登录成功。");
+		return new Result<User>(ResultStatus.SUCCESS.status, "登录成功。", user);
+
+	}
+
+	@Override
+	public void logOut() {
+		Subject subject = SecurityUtils.getSubject();
+		subject.logout();
+		
 	}
 
 	// 分页查询
@@ -97,7 +128,7 @@ public class UserServiceImpl implements UserService {
 	public Result<User> updateUser(User user) {
 		User userTemp = getUserByUserName(user.getUserName());
 		if (userTemp != null && userTemp.getUserId() != user.getUserId()) {
-			return new Result<User>(ResultStatus.FAILD.status, "账户已存在，请重新输入。");
+			return new Result<User>(ResultStatus.FAILED.status, "账户已存在，请重新输入。");
 		} else {
 			userDao.updateUser(user);
 			userRoleDao.deleteRoleByUserId(user.getUserId());
@@ -125,7 +156,7 @@ public class UserServiceImpl implements UserService {
 	public Result<User> editUser(User user) {
 		User userTemp = getUserByUserName(user.getUserName());
 		if (userTemp != null && userTemp.getUserId() != user.getUserId()) {
-			return new Result<User>(ResultStatus.FAILD.status, "账户已存在，请重新输入。");
+			return new Result<User>(ResultStatus.FAILED.status, "账户已存在，请重新输入。");
 		}
 		user.setPassword(MD5Util.getMD5(user.getPassword()));
 		user.setCreateDate(new Date());
@@ -144,7 +175,7 @@ public class UserServiceImpl implements UserService {
 			}
 
 		}
-		
+
 		/*
 		 * // 管理员编辑用户信息时，只修改用户角色 if (user.getUserId() > 0) { userDao.updateUser(user);
 		 * // userDao.updateUser(user);
@@ -153,7 +184,7 @@ public class UserServiceImpl implements UserService {
 		 * null && roles.size() > 0) { for (Role role : roles) {
 		 * userRoleDao.addUserRole(user.getUserId(), role.getRoleId()); } }
 		 */
-		
+
 		return new Result<User>(ResultStatus.SUCCESS.status, "编辑成功。", user);
 	}
 
@@ -161,10 +192,10 @@ public class UserServiceImpl implements UserService {
 	public Result<String> uploadUserImage(MultipartFile userImage) {
 
 		if (userImage.isEmpty()) {
-			return new Result<>(ResultStatus.FAILD.status, "用户图片为空。");
+			return new Result<>(ResultStatus.FAILED.status, "用户图片为空。");
 		}
 		if (!FileUtil.isImage(userImage)) {
-			return new Result<>(ResultStatus.FAILD.status, "所选择的文件不是图片。");
+			return new Result<>(ResultStatus.FAILED.status, "所选择的文件不是图片。");
 		}
 		String originalFilename = userImage.getOriginalFilename();
 		String relatedPath = resourceConfigBean.getResourcePath() + originalFilename;
@@ -175,7 +206,7 @@ public class UserServiceImpl implements UserService {
 		} catch (IllegalStateException | IOException e) {
 			LOGGER.debug(e.getMessage());
 			e.printStackTrace();
-			return new Result<>(ResultStatus.FAILD.status, "文件上传失败。");
+			return new Result<>(ResultStatus.FAILED.status, "文件上传失败。");
 		}
 		return new Result<>(ResultStatus.SUCCESS.status, "文件上传成功。", relatedPath);
 	}
@@ -185,21 +216,10 @@ public class UserServiceImpl implements UserService {
 	public Result<User> updateUserProfile(User user) {
 		User userTemp = getUserByUserName(user.getUserName());
 		if (userTemp != null && userTemp.getUserId() != user.getUserId()) {
-			return new Result<User>(ResultStatus.FAILD.status, "用户名已存在。");
+			return new Result<User>(ResultStatus.FAILED.status, "用户名已存在。");
 		}
 		userDao.updateUser(user);
 		return new Result<User>(ResultStatus.SUCCESS.status, "编辑成功。", user);
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
