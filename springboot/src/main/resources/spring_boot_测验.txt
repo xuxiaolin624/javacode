@@ -1,0 +1,122 @@
+一、选择题（共12小题，每小题2.5分，共30分）
+	以下不是spring boot优点的是 (  D  )
+		A．快速搭建项目
+		B．简化配置  
+		C．自动配置  
+		D．无需容器
+	Spring Boot配置，以下哪个优先级最高（ A ）
+		A、外置：xx.jar同目录下/config/application.properties；
+		B、外置：xx.jar同目录下/config/application.yml；
+		C、内置：src/main/resources/config；
+		D、内置：src/main/resources
+	以下log日志级别哪个最高（  D  ）
+		A、DEBUG
+		B、INFO
+		C、WARN
+		D、ERROR
+	以下不是spring boot的核心注解的是 (  D )
+		A.	@SpringBootConfiguration
+		B.	@EnableAutoConfiguration
+		C.	@ComponentScan
+		D.	@MapperScan
+	要使用springMVC的功能，以下哪个架包是必须加的 (  C  )
+		A．spring-boot-starter-jdbc  
+		B．spring-boot-starter-thymeleaf  
+		C．spring-boot-starter-web  
+		D．mybatis-spring-boot-starter
+	以下哪个注解不能加在类上 (  B  )
+		A.	@Controller
+		B.	@ResponseBody
+		C.	@RestController
+		D.	@RequestMapping
+	当控制层上有@RestController注解时，方法中返回一个字符串“<h1>Hello</h1>” 的结果是 (  B  )
+		A. 一级标题显示的Hello
+		B.	找不到Hello.html
+		C.	<h1>Hello</>
+		D.	Hello
+	SpringBoot项目中配置文件的格式 (  A )
+		A．properties  
+		B．yml  
+		C．两者都可以
+	前台使用json参数格式，控制器consumer、参数使用的注解是（  C  ）
+		A、application/josn ---- @RequestBody
+		B、application/josn ---- @ModelAttribute
+		C、application/x-www-form-urlencoded ---- @RequestBody
+		D、application/x-www-form-urlencoded ---- @ModelAttribute
+	@Pointcut("execution(public * com.thornBird.sbd.modules.*.controller.*.*(..))")，第三个*代表（  C ）
+		A、代表返回类型不限
+		B、代表module下所有子包
+		C、代表所有类
+		D、代表所有方法
+	Url匹配风格中/admin*，以下哪个匹配不正确（  D  ）
+		A、/admin
+		B、/admin1
+		C、/admin123
+		D、/admin/1
+	Mybatis框架中，插入数据使用那个注解（  B  ）
+		A、@Update
+		B、@Insert
+		C、@Select
+		D、@InsertMapping
+二、填空题（共5小题，每小题5分，共25分）
+	Java配置依赖的2个注解是___@ConponentScan_______，___@Bean________；
+	修改tomcat端口号为9090应该怎么写？__server.port = 9090______；
+	自定义拦截器需要实现____HandlerInterceptor____接口；
+	过滤器需要使用___@WebFilter______注解；
+	上传文件，使用__ MutipartFile __接收文件对象，consumer使用_____；
+三、问答题（每题5分）
+	简述Spring
+	Spring是Java企业版的轻量级代替品。Spring为企业级Java开发提供了一种相对简单的方法，通过依赖注入和面向切面编程，用Java对象实现了EJB的功能。
+
+	简述Git使用流程，写几个常用Git命令；
+	git clone 
+	git checkout -b dev -t origin/master
+	git commit -m "test" 
+	git push origin master 
+	git branch -a
+
+	简述敏捷开发、Scrum流程；
+	需求分析->原型设计->接口设计->前端设计->搭建项目框架->开发->测试->部署->运行
+
+	简述shiro两大功能实现流程；
+	引入所需jar->配置shiro
+
+四、编程题（共2小题，1题12分，2题13分，共25分）
+	访问控制层，将一个List装入requset中，再在页面上以表格的形式显示出来
+
+	@RequestMapping("/XXX")
+	public void query(HttpServletResponse resp) {
+		List<Student> students = userService.getAllStudentInfo();
+		JSONArray data = JSONArray.fromObject(students);
+		resp.setCharacterEncoding("utf-8");
+		PrintWriter respWritter = resp.getWriter();
+		respWritter.append(data.toString());
+	   }
+	
+	function sendInfo(){
+		$.ajax({
+			url : "/XXX",
+			type : "post",
+			contentType: "application/json",
+			dataType : "json",
+			success : function (data) {
+				showData(data);
+			},
+			error:function(){
+			}
+		});
+	}	
+
+	function showData(data) {
+ 		var str = "";
+		for (var i = 0; i < data.length; i++) {
+		 //拼接表格的行和列
+		str = "<tr><td>" + data[i].name + "</td><td>" + data[i].password + "</td></tr>";
+		 //添加到table中
+		  $("#tab").append(str);      
+		}
+	}
+
+	请写出重定向到某个页面的代码
+	return new ModelAndView("redirect:/index");
+	return "redirect:/index";
